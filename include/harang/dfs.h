@@ -75,4 +75,29 @@ constexpr decltype(auto) dfs(const Graph &g, const typename Graph::key_type &sta
   return res;
 }
 
+template <typename Graph>
+constexpr decltype(auto) dfs_vec(const Graph &g,
+                                 const typename Graph::key_type &start_key) {
+  std::unordered_map<typename Graph::key_type,
+                     dfs_vis_elem<typename Graph::key_type>>
+      vis;
+  for (const auto &p : g) {
+    vis[p.first].key_ = p.first;
+  }
+
+  int time = 0;
+  dfs_visit(g, start_key, vis, time);
+  for (const auto &p : g) {
+    if (vis[p.first].color_ == color::WHITE) {
+      dfs_visit(g, p.first, vis, time);
+    }
+  }
+
+  std::vector<dfs_elem<typename Graph::key_type>> res;
+  for (const auto &p : vis) {
+    res.emplace_back(create_dfs_elem(p.second));
+  }
+  return res;
+}
+
 } // namespace harang

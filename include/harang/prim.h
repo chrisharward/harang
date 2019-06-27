@@ -47,14 +47,6 @@ constexpr decltype(auto) prim(const Graph &g,
   std::unordered_map<typename Graph::key_type,
                      std::vector<typename Graph::edge_type>>
       res{};
-  // for (const auto &p : g) {
-  //   res[p.first];
-  //   for (const auto &pk : parent) {
-  //     if (pk.second == p.first) {
-  //       res[p.first].emplace_back(pk.first, key_edge[pk.first]);
-  //     }
-  //   }
-  // }
 
   for (const auto &pk : parent) {
     auto it = g.find(pk.second);

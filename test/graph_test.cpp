@@ -270,3 +270,31 @@ TEST_CASE( "bellman_ford_basic", "[graph]" ) {
   REQUIRE( span.value().second[7] == 0 );
   REQUIRE( span.value().second[8] == 2 );
 }
+
+TEST_CASE("connected_components", "[graph]") {
+  harang::graph<int, int> g;
+  g[1] = {{2, 1}};
+  g[2] = {{3, 1}};
+  g[3] = {{1, 1}, {4, 1}};
+  g[4];
+
+  decltype(auto) gt = graph_transpose(g);
+  REQUIRE(gt[1].size() == 1);
+  REQUIRE(gt[1].begin()->get_key() == 3);
+  REQUIRE(gt[2].size() == 1);
+  REQUIRE(gt[2].begin()->get_key() == 1);
+  REQUIRE(gt[3].size() == 1);
+  REQUIRE(gt[3].begin()->get_key() == 2);
+  REQUIRE(gt[4].size() == 1);
+  REQUIRE(gt[4].begin()->get_key() == 3);
+
+  auto comps = strongly_connected_components(g);
+  REQUIRE(!comps.empty());
+  REQUIRE(comps.size() == 2);
+  REQUIRE(comps[0].size() == 3);
+  REQUIRE(comps[0][0] == 3);
+  REQUIRE(comps[0][1] == 2);
+  REQUIRE(comps[0][2] == 1);
+  REQUIRE(comps[1].size() == 1);
+  REQUIRE(comps[1][0] == 4);
+}

@@ -82,6 +82,10 @@ public:
     return *it;
   }
 
+  constexpr void emplace_back(const Key &key, const Weight &weight) {
+    edges_.emplace_back(key, weight);
+  }
+
   constexpr size_t size() const { return edges_.size(); }
 
 private:
